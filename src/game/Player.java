@@ -32,7 +32,7 @@ public class Player implements Serializable, Comparable<Player> {
 
     @Override
     public int compareTo(Player player) {
-        return score - player.score;
+        return player.score - score ;
     }
 
     @Override

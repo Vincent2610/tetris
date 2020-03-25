@@ -8,8 +8,6 @@ package game;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.*;
 
 /**
@@ -73,7 +71,7 @@ public class Board extends JPanel {
     private int deltaTime;
     private ScoreBoardIncrementer scoreBoard;
     int reachPoints = 300;
-    private EndGame end;
+    private StartGame startGame;
     private PauseGame pauseGame;
     private String playerName;
 
@@ -116,10 +114,10 @@ public class Board extends JPanel {
     }
 
     private void updateScores() throws IOException {
-        end.makeList(new Player(playerName,scoreBoard.getScore()));
-        end.orderList();
-        end.saveList();
-        end.printList();
+        startGame.makeList(scoreBoard.getScore());
+        startGame.orderList();
+        startGame.saveList();
+        startGame.printList();
     }
 
     
@@ -127,7 +125,7 @@ public class Board extends JPanel {
     public Board(ScoreBoardIncrementer scb, JFrame parent) {
         this();
         scoreBoard = scb;
-        end = new EndGame(parent, true, this);
+        startGame = new StartGame(parent, true, this);
         pauseGame = new PauseGame(parent, true, this);
     }
 
@@ -140,9 +138,6 @@ public class Board extends JPanel {
         timer.start();
     }
 
-    public void takePlayerName(String playerName) {
-        this.playerName = playerName;
-    }
 
     private void changeDeltaTime() {
         if (scoreBoard.getScore() > reachPoints) {

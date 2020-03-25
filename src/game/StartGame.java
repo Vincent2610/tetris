@@ -79,7 +79,7 @@ public class StartGame extends javax.swing.JDialog {
         }
     }
 
-    public void saveList() throws IOException {
+    public void saveList() throws IOException  {
         
         ObjectOutputStream out = null;
         try {
