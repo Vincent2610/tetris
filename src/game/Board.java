@@ -112,9 +112,14 @@ public class Board extends JPanel {
         addKeyListener(keyAdepter);
         resetGame();
     }
+    
+    public void takePlayerName(String name){
+        playerName=name;
+    }
 
     private void updateScores() throws IOException {
-        startGame.makeList(scoreBoard.getScore());
+        Player p = new Player(playerName, scoreBoard.getScore());
+        startGame.makeList(p);
         startGame.orderList();
         startGame.saveList();
         startGame.printList();

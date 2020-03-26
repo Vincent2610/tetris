@@ -42,8 +42,7 @@ public class StartGame extends javax.swing.JDialog {
         jLabel1.setFont(new Font("Serif", Font.PLAIN, 20));
     }
     
-    public void makeList(int score) throws IOException {
-        Player player = new Player(playerName, score);
+    public void makeList(Player player) throws IOException { 
         currentPlayer=player;
         players.add(player);
         
@@ -206,10 +205,10 @@ public class StartGame extends javax.swing.JDialog {
 
     private void startGameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startGameButtonActionPerformed
         if (!jTextField1.getText().trim().equalsIgnoreCase("") && jTextField1.getText() != null) {
-            board.initGame();
             playerName = jTextField1.getText();
-            this.setVisible(false);
-            
+            board.takePlayerName(playerName);
+            board.initGame();
+            this.setVisible(false);           
         } else {
             jLabel3.setText("Insert a name ");
         }
