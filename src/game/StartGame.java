@@ -18,10 +18,12 @@ public class StartGame extends javax.swing.JDialog {
 
     private static Board board;
     private String playerName;
-    private static final String FILE_NAME = "scores.csv";
-    private static final String FILE_NAME2 = "scores2.csv";
+    private static final String FILE_NAME = "scores.txt";
+    private static final String TMP = "tmp.txt";
     private List<Player> players;
     private Player currentPlayer;
+    private File dest;
+    private File creator;
 
     /**
      * Creates new form StartGame
@@ -31,7 +33,7 @@ public class StartGame extends javax.swing.JDialog {
         initComponents();
         initMyComponets();
         this.board = board;
-        players = new ArrayList<Player>();
+        
         
 
     }
@@ -41,15 +43,22 @@ public class StartGame extends javax.swing.JDialog {
         jLabel1.setVerticalAlignment(SwingConstants.CENTER);
         jLabel1.setFont(new Font("Serif", Font.PLAIN, 20));
     }
-    
-    public void makeList(Player player) throws IOException { 
-        currentPlayer=player;
+
+    private void cretionFiles() {
+        players = new ArrayList<Player>();
+        creator = new File(FILE_NAME);
+        dest = new File(TMP);
+    }
+
+    public void makeList(Player player) throws IOException {
+        cretionFiles();
+        currentPlayer = player;
         players.add(player);
-        
+
         ObjectInputStream in = null;
 
         try {
-            in = new ObjectInputStream(new BufferedInputStream(new FileInputStream(FILE_NAME)));
+            in = new ObjectInputStream(new BufferedInputStream(new FileInputStream(creator)));
             while (true) {
                 Player p = (Player) in.readObject();
                 players.add(p);
@@ -70,23 +79,24 @@ public class StartGame extends javax.swing.JDialog {
 
     public void orderList() {
         Collections.sort(players);
-        while(players.size()>5){
-         players.remove(players.size()-1);
+        while (players.size() > 5) {
+            players.remove(players.size() - 1);
         }
         for (Player p : players) {
             System.out.println(p);
         }
     }
 
-    public void saveList() throws IOException  {
-        
+    public void saveList() throws IOException {
+
         ObjectOutputStream out = null;
         try {
-            out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(FILE_NAME2)));
+            out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(dest)));
 
             for (Player p : players) {
                 out.writeObject(p);
             }
+            
 
         } finally {
             if (out != null) {
@@ -94,17 +104,19 @@ public class StartGame extends javax.swing.JDialog {
             }
         }
         
+        dest.renameTo(new File(FILE_NAME));
+
     }
 
     public void printList() {
-        String finalScores="";
-        jLabel4.setText("Your score is " +currentPlayer.getScore());
-        
+        String finalScores = "";
+        jLabel4.setText("Your score is " + currentPlayer.getScore());
+
         for (Player p : players) {
             finalScores += p + "\n";
         }
         jLabel5.setText(finalScores);
-        
+
         this.setVisible(true);
     }
 
@@ -208,7 +220,7 @@ public class StartGame extends javax.swing.JDialog {
             playerName = jTextField1.getText();
             board.takePlayerName(playerName);
             board.initGame();
-            this.setVisible(false);           
+            this.setVisible(false);
         } else {
             jLabel3.setText("Insert a name ");
         }
@@ -275,4 +287,5 @@ public class StartGame extends javax.swing.JDialog {
     private javax.swing.JTextField jTextField1;
     private javax.swing.JButton startGameButton;
     // End of variables declaration//GEN-END:variables
+
 }
