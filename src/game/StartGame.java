@@ -19,11 +19,8 @@ public class StartGame extends javax.swing.JDialog {
     private static Board board;
     private String playerName;
     private static final String FILE_NAME = "scores.txt";
-    private static final String TMP = "tmp.txt";
     private List<Player> players;
     private Player currentPlayer;
-    private File dest;
-    private File creator;
 
     /**
      * Creates new form StartGame
@@ -44,21 +41,17 @@ public class StartGame extends javax.swing.JDialog {
         jLabel1.setFont(new Font("Serif", Font.PLAIN, 20));
     }
 
-    private void cretionFiles() {
-        players = new ArrayList<Player>();
-        creator = new File(FILE_NAME);
-        dest = new File(TMP);
-    }
+    
 
     public void makeList(Player player) throws IOException {
-        cretionFiles();
+        players = new ArrayList<Player>();
         currentPlayer = player;
         players.add(player);
 
         ObjectInputStream in = null;
 
         try {
-            in = new ObjectInputStream(new BufferedInputStream(new FileInputStream(creator)));
+            in = new ObjectInputStream(new BufferedInputStream(new FileInputStream(FILE_NAME)));
             while (true) {
                 Player p = (Player) in.readObject();
                 players.add(p);
@@ -91,7 +84,7 @@ public class StartGame extends javax.swing.JDialog {
 
         ObjectOutputStream out = null;
         try {
-            out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(dest)));
+            out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(FILE_NAME)));
 
             for (Player p : players) {
                 out.writeObject(p);
@@ -103,10 +96,7 @@ public class StartGame extends javax.swing.JDialog {
                 out.close();
             }
         }
-        
-        dest.renameTo(new File(FILE_NAME));
-
-    }
+}
 
     public void printList() {
         String finalScores = "";
